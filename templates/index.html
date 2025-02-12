@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Feedback Form</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Custom styles -->
+    <style>
+        body {
+            background-color: #1444e1;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 7%;
+        }
+        .title-bar {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .title-bar button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-right: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .title-bar button:hover {
+            background-color: #45a049;
+        }
+        .title-bar button:first-child {
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="title-bar">
+        <!--
+        <button onclick="redirectToEmail()">Email</button>
+        <button>Button 2</button>
+    -->
+    </div>
+
+    <div class="container">
+        <h2 class="mb-4 text-center">Facebook Feedback Form</h2>
+        <form id="feedbackForm">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="name"required>
+            </div>
+            <div class="form-group">
+                <label for="comment">Comment:</label>
+                <textarea class="form-control" id="comment" name="comment" maxlength="300" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="count">Count:</label>
+                <input type="number" class="form-control" id="count" name="count" required>
+            </div>
+            <button type="button" class="btn btn-primary btn-block" onclick="submitForm()">Submit</button>
+        </form>
+
+        <div class="mt-4" id="responseContainer">
+            <!-- Response will be displayed here -->
+        </div>
+    </div>
+
+    <!-- Add Bootstrap JS and jQuery script links -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <!-- Add a script to handle form submission -->
+    <!-- Add a script to handle form submission -->
+    <script>
+        function redirectToEmail() {
+            //window.location.href = "/email";
+        }
+
+        function submitForm() {
+            // Get form data
+            var name = document.getElementById("name");
+            var comment = document.getElementById("comment").value;
+            var count = document.getElementById("count").value;
+
+            // Validation
+            if (name.value.length > 30) {
+                name.style.borderColor = ""
+                //alert("Name should not exceed 30 characters.");
+                //name.style.borderColor = "red";
+                //return;
+            } else {
+                name.style.borderColor = ""; // Reset border color if no error
+            }
+
+           
+
+            if (comment.trim() === "") {
+                alert("Comment cannot be empty.");
+                document.getElementById("comment").style.borderColor = "red";
+                return;
+            } else {
+                document.getElementById("comment").style.borderColor = ""; // Reset border color if no error
+            }
+
+            // Show progress bar
+            document.getElementById("responseContainer").innerHTML = '<div class="progress mt-4"><div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div></div>';
+
+            // Get form data
+            var formData = {
+                name: name.value,
+                comment: comment,
+                count: count
+            };
+            //'https://https://fbfeedbackform-c8efdxfwceaze7d6.canadacentral-01.azurewebsites.net/api'
+            //'http://127.0.0.1:5000/api'
+            // Make a POST request to the API endpoint
+            //'http://www.codecraftlab.tech/api'
+            fetch('https://fbfeedbackform-c8efdxfwceaze7d6.canadacentral-01.azurewebsites.net/api', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the response
+                document.getElementById("responseContainer").innerHTML = '<strong>Response:</strong> ' + data.response;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+
+
+</body>
+</html>
