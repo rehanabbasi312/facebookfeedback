@@ -64,9 +64,11 @@ def api():
         data = request.get_json()
         name = data['name']
         feedback = data['comment']
-        count = data['count']
+        #count = data['count']
         # Call your Python script function
-        response,category = getResponse(name, feedback)
+        response = getResponse(name, feedback)
+        print(response)
+        
 
         #bot_api_calling(name, rating, feedback, response, category, count)
         return jsonify({'response': response})
